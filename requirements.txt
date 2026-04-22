@@ -23,3 +23,6 @@ mmpose==0.29.0
 # 유틸
 scikit-image>=0.19.0
 scipy>=1.9.0
+
+# 웹 데모 (Python 3.8 호환 gradio 3.x)
+gradio>=3.50,<4

@@ -37,3 +37,6 @@ desktop.ini
 # === TorchServe 임시 ===
 *.pid
 .model_server.pid
+
+# === 개발 도구 바이너리 ===
+tools/

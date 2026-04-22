@@ -85,6 +85,31 @@ stop_torchserve.bat    # Windows
 ./stop_torchserve.sh   # Linux/Mac
 ```
 
+## 웹 데모 (Gradio)
+
+TorchServe가 기동된 상태에서 브라우저에서 파이프라인을 실행할 수 있습니다.
+
+```bash
+conda activate animated_drawings
+python demo/app.py                      # 기본: 0.0.0.0:7860 + gradio.live 공유 시도
+python demo/app.py --no-share           # 로컬/LAN 전용
+python demo/app.py --port 8000          # 포트 변경
+```
+
+- **LAN 공유**: 같은 네트워크의 다른 기기에서 `http://<호스트-IP>:7860` 접속
+- **퍼블릭 URL**: `gradio.live` 터널 실패 시 [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/tunnel-guide/) 사용
+
+```bash
+# cloudflared 다운로드 (Windows 예시, 1회)
+curl -L -o tools/cloudflared.exe https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.exe
+
+# Gradio가 실행 중인 상태에서 별도 터미널
+tools/cloudflared.exe tunnel --url http://localhost:7860
+# → https://<무작위-이름>.trycloudflare.com URL 출력
+```
+
+데모 화면에서 이미지 업로드 또는 웹캠 촬영 → 모션 선택 → **애니메이션 생성** 버튼. 처리에 15~20초 소요되며 GIF가 우측에 재생됩니다.
+
 ## 사용 가능한 모션
 
 | 이름 | 설명 | 호환 스켈레톤 |
