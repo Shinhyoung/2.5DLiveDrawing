@@ -1,0 +1,39 @@
+# === 외부 의존성 / 대용량 ===
+# Meta가 공개한 AnimatedDrawings 저장소 (setup_env.sh/bat이 git clone)
+AnimatedDrawings/
+
+# TorchServe .mar 가중치 (파일당 수백 MB — GitHub 100MB 제한 초과, setup에서 다운로드)
+model_store/*.mar
+models/*.mar
+
+# === 런타임 생성물 ===
+output/
+logs/
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# === 가상환경 / 에디터 ===
+.venv/
+venv/
+env/
+.vscode/
+.idea/
+
+# === OS ===
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# === Claude Code 로컬 설정 ===
+.claude/
+
+# === TorchServe 임시 ===
+*.pid
+.model_server.pid

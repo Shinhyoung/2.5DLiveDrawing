@@ -1,0 +1,32 @@
+app:
+  name: RealSense AnimatedDrawings
+  version: "0.1.0"
+  output_dir: "./output"
+  log_dir: "./logs"
+
+camera:
+  width: 1280
+  height: 720
+  fps: 30
+  warmup_frames: 30
+
+preprocessor:
+  target_size: 512
+  white_threshold: 200
+  margin_ratio: 0.05
+
+torchserve:
+  base_url: "http://localhost:8080"
+  health_endpoint: "/ping"
+  ready_timeout: 60
+  config_path: "./config/torchserve_config.properties"
+  model_store: "./model_store"
+  models:
+    - drawn_humanoid_detector
+    - drawn_humanoid_pose_estimator
+
+animation:
+  default_motion: "dab"
+  default_retarget: "fair1_ppf"
+  output_format: "gif"   # gif | mp4
+  fps: 24
