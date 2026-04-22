@@ -19,11 +19,29 @@ def _setup_paths() -> None:
         sys.path.insert(0, str(here))
 
 
+def _hide_glfw_window() -> None:
+    """AnimatedDrawings가 create_window 전에 VISIBLE 힌트를 지정하지 않아
+    video_render 모드에서도 창이 잠시 노출된다. create_window를 감싸
+    호출 직전에 VISIBLE=False 힌트를 추가하여 완전히 숨긴다."""
+    try:
+        import glfw  # AnimatedDrawings 의존성
+    except Exception:
+        return
+    _orig = glfw.create_window
+
+    def _hidden_create_window(width, height, title, monitor, share):
+        glfw.window_hint(glfw.VISIBLE, glfw.FALSE)
+        return _orig(width, height, title, monitor, share)
+
+    glfw.create_window = _hidden_create_window
+
+
 def main() -> int:
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 
     _setup_paths()
+    _hide_glfw_window()
     from pipeline.animation_runner import run_animation
 
     ap = argparse.ArgumentParser()
