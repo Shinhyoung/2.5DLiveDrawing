@@ -60,8 +60,9 @@ def torchserve_status() -> str:
 
 
 def animate(image: Optional[np.ndarray], motion: str,
-            progress: gr.Progress = gr.Progress()) -> str:
-    """이미지 → 전처리 → 주석 → 렌더 파이프라인. Gradio에 GIF 경로 반환."""
+            progress: gr.Progress = gr.Progress()) -> tuple[str, str]:
+    """이미지 → 전처리 → 주석 → 렌더 파이프라인.
+    (프리뷰용, 다운로드용) 두 출력에 동일한 GIF 경로를 반환한다."""
     if image is None:
         raise gr.Error("이미지를 업로드하거나 웹캠으로 촬영하세요.")
 
@@ -113,7 +114,8 @@ def animate(image: Optional[np.ndarray], motion: str,
 
     progress(1.0, desc="완료!")
     logger.info(f"세션 {session} 완료: {out_gif}")
-    return str(out_gif)
+    path = str(out_gif)
+    return path, path
 
 
 def build_ui() -> gr.Blocks:
@@ -167,17 +169,25 @@ def build_ui() -> gr.Blocks:
 
             with gr.Column(scale=1):
                 result = gr.Image(
-                    label="생성된 애니메이션 (GIF)",
+                    label="생성된 애니메이션 (GIF 미리보기)",
                     type="filepath",
                     height=480,
                 )
-                download = gr.File(label="GIF 다운로드")
+                gr.Markdown(
+                    "💡 **다운로드는 아래 파일 영역**에서 받으세요. "
+                    "미리보기의 다운로드 아이콘은 PNG 한 프레임만 저장합니다."
+                )
+                download = gr.File(
+                    label="📥 애니메이션 GIF 다운로드",
+                    file_count="single",
+                    type="file",
+                )
 
         run_btn.click(
             fn=animate,
             inputs=[image_input, motion_input],
-            outputs=[result],
-        ).then(lambda x: x, inputs=[result], outputs=[download])
+            outputs=[result, download],
+        )
 
         clear_btn.click(
             fn=lambda: (None, None, None),
