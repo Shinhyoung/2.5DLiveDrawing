@@ -113,10 +113,13 @@ MOTION_RETARGET_MAP: dict[str, str] = {
     "wave_hello": "fair1_ppf",
     "zombie": "fair1_ppf",
     "jumping_jacks": "cmu1_pfp",
+    # jesse_dance는 rokoko 스켈레톤(LeftShoulder/LeftArm 등 Mixamo 호환 본 이름)을 쓰므로
+    # mixamo_fff 리타겟과 호환된다 (공식 rokoko_motion_example.yaml 참조).
+    "jesse_dance": "mixamo_fff",
 }
 
-# 리타겟 호환이 알려지지 않은 모션(예: jesse_dance는 rokoko BVH용 retarget 설정이 없음).
-MOTIONS_WITHOUT_RETARGET = {"jesse_dance"}
+# 리타겟이 매핑되지 않은 모션 (현재 모든 6개 모션이 매핑됨).
+MOTIONS_WITHOUT_RETARGET: set[str] = set()
 
 
 def resolve_retarget(motion: str, fallback: str = "fair1_ppf") -> str:
